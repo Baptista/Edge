@@ -1,0 +1,10 @@
+C:\Users\Bruno Batista\Desktop\edge-timesheetProject\TimeSheet\TimeSheetEmployee\obj\Debug\TimeSheetEmployee.csprojResolveAssemblyReference.cache
+C:\Users\Bruno Batista\Desktop\edge-timesheetProject\TimeSheet\TimeSheetEmployee\obj\Debug\TimeSheetEmployee.Form1.resources
+C:\Users\Bruno Batista\Desktop\edge-timesheetProject\TimeSheet\TimeSheetEmployee\obj\Debug\TimeSheetEmployee.Properties.Resources.resources
+C:\Users\Bruno Batista\Desktop\edge-timesheetProject\TimeSheet\TimeSheetEmployee\obj\Debug\TimeSheetEmployee.csproj.GenerateResource.Cache
+C:\Users\Bruno Batista\Desktop\edge-timesheetProject\TimeSheet\TimeSheetEmployee\obj\Debug\TimeSheetEmployee.csproj.CoreCompileInputs.cache
+C:\Users\Bruno Batista\Desktop\edge-timesheetProject\TimeSheet\TimeSheetEmployee\bin\Debug\TimeSheetEmployee.exe.config
+C:\Users\Bruno Batista\Desktop\edge-timesheetProject\TimeSheet\TimeSheetEmployee\bin\Debug\TimeSheetEmployee.exe
+C:\Users\Bruno Batista\Desktop\edge-timesheetProject\TimeSheet\TimeSheetEmployee\bin\Debug\TimeSheetEmployee.pdb
+C:\Users\Bruno Batista\Desktop\edge-timesheetProject\TimeSheet\TimeSheetEmployee\obj\Debug\TimeSheetEmployee.exe
+C:\Users\Bruno Batista\Desktop\edge-timesheetProject\TimeSheet\TimeSheetEmployee\obj\Debug\TimeSheetEmployee.pdb
