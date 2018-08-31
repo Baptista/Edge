@@ -17,14 +17,14 @@ order by 1 desc
 --where ID = 47387
 
 select * from [dbo].[OSUSR_KWM_TIMESHEETLINE3]
-where TIMESHEETID = 47393
+where TIMESHEETID = 47399
 --delete from [OSUSR_KWM_TIMESHEETLINE3]
 --where ID = 96464
 
 select * from [dbo].[OSUSR_KWM_TIMESHEETLINE3] order by 1 desc
 
 select * from [dbo].[OSUSR_KWM_TIMESHEETITEM3]
-where TIMESHEETLINEID = 96469
+where TIMESHEETLINEID = 96474
 
 
 select * from [OSUSR_KWM_TIMESHEET3] as sheet3
@@ -34,10 +34,10 @@ where sheet3.EMPLOYEEID = 11531 --and STARTDATE = '2018-08-31'
 order by 1 desc
 go
 
+SELECT DATEPART(weekday, '2018-08-26')
+SELECT DATENAME(weekday, '2018-08-26')
 
-
-
-
+go
 create proc insert_OSUSR_KWM_TIMESHEET3
 @employeeid int,
 @startdate datetime,
@@ -68,19 +68,22 @@ go
 
 create proc insert_OSUSR_KWM_TIMESHEETITEM3
 @timesheetlineid int,
-@date datetime
+@date datetime,
+@numberofdays int
 as
 
 declare @count int;
+declare @isweek int;
 set @count = 0;
-while @count < 7
+while @numberofdays >= 0
 begin
-	if(@count<5)
-		insert into OSUSR_KWM_TIMESHEETITEM3 values(@timesheetlineid,@date,8.00000000,0.00000000)
+	if(DATEPART(weekday, @date) = 1 or DATEPART(weekday, @date) = 7)
+		insert into OSUSR_KWM_TIMESHEETITEM3 values(@timesheetlineid,@date,0.00000000,0.00000000)		
 	else
-		insert into OSUSR_KWM_TIMESHEETITEM3 values(@timesheetlineid,@date,0.00000000,0.00000000)
+		insert into OSUSR_KWM_TIMESHEETITEM3 values(@timesheetlineid,@date,8.00000000,0.00000000)
+
 	set @date = DATEADD(DAY, 1, @date) 
-	set @count = @count + 1
+	set @numberofdays = @numberofdays - 1
 end
 
 go

@@ -15,6 +15,7 @@ namespace TimeSheetEmployee
     public partial class Form1 : Form
     {
         private DateTime startdate;
+        private DateTime enddate;
         private int employeeid;
         private int projectid;
         private int tasktypeid;
@@ -24,6 +25,7 @@ namespace TimeSheetEmployee
         {
             InitializeComponent();
             startdate = DateTime.Now.Date;
+            enddate = DateTime.Now.Date;
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e) => startdate = dateTimePicker1.Value.Date;
@@ -42,7 +44,7 @@ namespace TimeSheetEmployee
             string timesheetid = SelectID_OSUSR_KWM_TIMESHEET3(employeeid, startdate);
             if (!ExecuteInsert_OSUSR_KWM_TIMESHEETLINE3(Convert.ToInt32(timesheetid), projectid, tasktypeid)) return;
             string timesheetlineid = SelectID_OSUSR_KWM_TIMESHEETLINE3(Convert.ToInt32(timesheetid), projectid, tasktypeid);
-            if(!ExecuteInsert_OSUSR_KWM_TIMESHEETITEM3(Convert.ToInt32(timesheetlineid), startdate)) return;
+            if(!ExecuteInsert_OSUSR_KWM_TIMESHEETITEM3(Convert.ToInt32(timesheetlineid), startdate , Convert.ToInt32((enddate-startdate).TotalDays))) return;
         }
 
 
@@ -171,7 +173,7 @@ namespace TimeSheetEmployee
 
 
 
-        private bool ExecuteInsert_OSUSR_KWM_TIMESHEETITEM3(int timesheetlineid, DateTime date)
+        private bool ExecuteInsert_OSUSR_KWM_TIMESHEETITEM3(int timesheetlineid, DateTime date , int numberofdays)
         {
 
             String connectionstring = ConfigurationManager.ConnectionStrings["stringconnect"].ConnectionString;
@@ -183,6 +185,7 @@ namespace TimeSheetEmployee
 
                 cmd.Parameters.Add("@timesheetlineid", SqlDbType.Int).Value = timesheetlineid;
                 cmd.Parameters.Add("@date", SqlDbType.DateTime).Value = date.Date;
+                cmd.Parameters.Add("@numberofdays", SqlDbType.Int).Value = numberofdays;
 
                 con.Open();
                 cmd.ExecuteNonQuery();
@@ -231,8 +234,9 @@ namespace TimeSheetEmployee
             }
         }
 
-
-
-
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            enddate = dateTimePicker2.Value.Date;
+        }
     }
 }
