@@ -24,8 +24,8 @@ where TIMESHEETID = 47399
 select * from [dbo].[OSUSR_KWM_TIMESHEETLINE3] order by 1 desc
 
 select * from [dbo].[OSUSR_KWM_TIMESHEETITEM3]
-where TIMESHEETLINEID = 96474
-
+--where TIMESHEETLINEID = 96474
+order by 1 desc
 
 select * from [OSUSR_KWM_TIMESHEET3] as sheet3
 inner join OSUSR_KWM_TIMESHEETLINE3 as line3 on line3.TIMESHEETID = sheet3.ID 
@@ -96,3 +96,58 @@ select * from  OSUSR_KWM_TIMESHEETITEM3 where DATE = '2012-05-28'
 
 
 SELECT DATEADD(DAY, 1, '2017-08-25') AS DateAdd;
+
+go
+
+create proc insert_EmployeeHours
+@employeeid int,
+@startdate datetime,
+@statuid int,
+@projectid int,
+@tasktypeid int,
+@numberofdays int
+as
+
+
+begin try
+
+begin tran
+
+declare @timesheetid int;
+declare @timesheetlineid int;
+set @timesheetid = 0; 
+set @timesheetlineid = 0;
+
+insert into OSUSR_KWM_TIMESHEET3 values (@employeeid,@startdate,@statuid, '','');
+
+-------------------
+
+set @timesheetid = (select top 1 ID from  OSUSR_KWM_TIMESHEET3 where EMPLOYEEID = @employeeid and STARTDATE = @startdate order by 1 desc)
+
+insert into OSUSR_KWM_TIMESHEETLINE3 values (@timesheetid,@projectid,@tasktypeid, 
+8.00,8.00,8.00,8.00,8.00,0.00,0.00,
+0.00000000,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000,0.00000000
+,null)
+
+--------------------
+
+set @timesheetlineid = (select top 1 ID from OSUSR_KWM_TIMESHEETLINE3 where TIMESHEETID = @timesheetid and projectid = @projectid and tasktypeid = @tasktypeid order by 1 desc)
+declare @count int;
+declare @isweek int;
+set @count = 0;
+while @numberofdays >= 0
+begin
+	if(DATEPART(weekday, @startdate) = 1 or DATEPART(weekday, @startdate) = 7)
+		insert into OSUSR_KWM_TIMESHEETITEM3 values(@timesheetlineid,@startdate,0.00000000,0.00000000)		
+	else
+		insert into OSUSR_KWM_TIMESHEETITEM3 values(@timesheetlineid,@startdate,8.00000000,0.00000000)
+
+	set @startdate = DATEADD(DAY, 1, @startdate) 
+	set @numberofdays = @numberofdays - 1
+end
+
+commit
+end try
+begin catch
+	rollback
+end catch

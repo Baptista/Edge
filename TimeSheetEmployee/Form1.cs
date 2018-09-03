@@ -40,11 +40,15 @@ namespace TimeSheetEmployee
             tasktypeid = Convert.ToInt32(txt_tasktypeid.Text);
             statusid = Convert.ToInt32(txt_statusid.Text);
 
-            if (!ExecuteInsert_OSUSR_KWM_TIMESHEET3(employeeid, startdate, statusid)) return;
-            string timesheetid = SelectID_OSUSR_KWM_TIMESHEET3(employeeid, startdate);
-            if (!ExecuteInsert_OSUSR_KWM_TIMESHEETLINE3(Convert.ToInt32(timesheetid), projectid, tasktypeid)) return;
-            string timesheetlineid = SelectID_OSUSR_KWM_TIMESHEETLINE3(Convert.ToInt32(timesheetid), projectid, tasktypeid);
-            if(!ExecuteInsert_OSUSR_KWM_TIMESHEETITEM3(Convert.ToInt32(timesheetlineid), startdate , Convert.ToInt32((enddate-startdate).TotalDays))) return;
+
+            ExecuteInsertEmployeeHours(employeeid,startdate , statusid , projectid , tasktypeid, Convert.ToInt32((enddate - startdate).TotalDays));
+
+
+            //if (!ExecuteInsert_OSUSR_KWM_TIMESHEET3(employeeid, startdate, statusid)) return;
+            //string timesheetid = SelectID_OSUSR_KWM_TIMESHEET3(employeeid, startdate);
+            //if (!ExecuteInsert_OSUSR_KWM_TIMESHEETLINE3(Convert.ToInt32(timesheetid), projectid, tasktypeid)) return;
+            //string timesheetlineid = SelectID_OSUSR_KWM_TIMESHEETLINE3(Convert.ToInt32(timesheetid), projectid, tasktypeid);
+            //if(!ExecuteInsert_OSUSR_KWM_TIMESHEETITEM3(Convert.ToInt32(timesheetlineid), startdate , Convert.ToInt32((enddate-startdate).TotalDays))) return;
         }
 
 
@@ -170,6 +174,43 @@ namespace TimeSheetEmployee
                 con.Close();
             }
         }
+
+
+        private bool ExecuteInsertEmployeeHours(int employeeid,DateTime startdate, int statuid, int projectid, int tasktypeid , int numberofdays)
+        {
+            String connectionstring = ConfigurationManager.ConnectionStrings["stringconnect"].ConnectionString;
+            SqlConnection con = new SqlConnection(connectionstring);
+            try
+            {
+                SqlCommand cmd = new SqlCommand("insert_EmployeeHours", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@employeeid", SqlDbType.Int).Value = employeeid;
+                cmd.Parameters.Add("@startdate", SqlDbType.DateTime).Value = startdate;
+                cmd.Parameters.Add("@statuid", SqlDbType.Int).Value = statuid;
+                cmd.Parameters.Add("@projectid", SqlDbType.Int).Value = projectid;
+                cmd.Parameters.Add("@tasktypeid", SqlDbType.Int).Value = tasktypeid;
+                cmd.Parameters.Add("@numberofdays", SqlDbType.Int).Value = numberofdays;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("sucesso");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+
+
+
 
 
 
