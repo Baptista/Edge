@@ -41,14 +41,14 @@ namespace TimeSheetEmployee
             statusid = Convert.ToInt32(txt_statusid.Text);
 
 
-            ExecuteInsertEmployeeHours(employeeid,startdate , statusid , projectid , tasktypeid, Convert.ToInt32((enddate - startdate).TotalDays));
+            //ExecuteInsertEmployeeHours(employeeid,startdate , statusid , projectid , tasktypeid, Convert.ToInt32((enddate - startdate).TotalDays));
 
 
-            //if (!ExecuteInsert_OSUSR_KWM_TIMESHEET3(employeeid, startdate, statusid)) return;
-            //string timesheetid = SelectID_OSUSR_KWM_TIMESHEET3(employeeid, startdate);
-            //if (!ExecuteInsert_OSUSR_KWM_TIMESHEETLINE3(Convert.ToInt32(timesheetid), projectid, tasktypeid)) return;
-            //string timesheetlineid = SelectID_OSUSR_KWM_TIMESHEETLINE3(Convert.ToInt32(timesheetid), projectid, tasktypeid);
-            //if(!ExecuteInsert_OSUSR_KWM_TIMESHEETITEM3(Convert.ToInt32(timesheetlineid), startdate , Convert.ToInt32((enddate-startdate).TotalDays))) return;
+            if (!ExecuteInsert_OSUSR_KWM_TIMESHEET3(employeeid, startdate, statusid)) return;
+            string timesheetid = SelectID_OSUSR_KWM_TIMESHEET3(employeeid, startdate);
+            if (!ExecuteInsert_OSUSR_KWM_TIMESHEETLINE3(Convert.ToInt32(timesheetid), projectid, tasktypeid)) return;
+            string timesheetlineid = SelectID_OSUSR_KWM_TIMESHEETLINE3(Convert.ToInt32(timesheetid), projectid, tasktypeid);
+            if (!ExecuteInsert_OSUSR_KWM_TIMESHEETITEM3(Convert.ToInt32(timesheetlineid), startdate, Convert.ToInt32((enddate - startdate).TotalDays))) return;
         }
 
 
